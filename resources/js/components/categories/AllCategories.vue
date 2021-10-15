@@ -73,7 +73,12 @@ export default {
             // Show loading alert
             this.loading = true
             await axios.post('/categories', this.category)
-            .then(res => this.getCategories())
+            .then(res => {
+                // Refresh categories
+                this.getCategories()
+                // Reset the category object
+                this.category.name, this.category.parent = null
+            })
             .catch(err => {
                 // Show errors
                 this.errors = err.response.data.errors
