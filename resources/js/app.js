@@ -4,11 +4,21 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
-// Plugins
+/* Plugins */
+// Axios
+import axios from 'axios';
+// Let's do an API base url so that we can consum other version easily when we want
+axios.defaults.baseURL = '/api/v1/';
+
+
 // Bootstrap
 require('./bootstrap');
 import "bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css"
+
+// FontAwesome
+import '@fortawesome/fontawesome-free/css/all.css'
+import '@fortawesome/fontawesome-free/js/all.js'
 
 
 window.Vue = require('vue').default;
@@ -25,6 +35,8 @@ window.Vue = require('vue').default;
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('categories', require('./components/categories/AllCategories.vue').default);
+Vue.component('categories-table', require('./components/categories/CategoriesTable.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

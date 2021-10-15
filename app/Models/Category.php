@@ -9,6 +9,8 @@ class Category extends Model
 {
     use HasFactory;
 
+    public $fillable = ['name', 'parent'];
+
     public function children()
     {
         return $this->hasMany( 'App\Models\Category', 'parent', 'id' );
