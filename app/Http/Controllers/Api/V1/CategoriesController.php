@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\CategoryRequest;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
@@ -30,7 +31,7 @@ class CategoriesController extends Controller
     public function store(CategoryRequest $request)
     {
         // Get only the necessary data to fill
-        $data = $request->only(['name', 'parent']);
+        $data = $request->only(Product::getRequiredFields());
         // Persist a new category to the database
         $category = (new Category())->create($data);
         return response()->json($category);

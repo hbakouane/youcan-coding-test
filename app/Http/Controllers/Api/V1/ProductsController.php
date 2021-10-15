@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ProductRequest;
 use App\Http\Resources\Api\V1\ProductResource;
+use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -20,7 +22,7 @@ class ProductsController extends Controller
     public function index()
     {
         // Get all the products
-        $products = Product::orderBy('id', 'DESC')->get();
+        $products = Product::with('categories')->orderBy('id', 'DESC')->get();
         return response()->json($products);
     }
 
@@ -44,6 +46,8 @@ class ProductsController extends Controller
             $data['image'] = Storage::url($uploadedFile);
         }
         $createdProduct = (new Product())->create($data);
+        // Handle the product categories that can be many not just one
+        $createdProduct->categories()->attach(explode(',', $request->category_id));
         return new ProductResource($createdProduct);
     }
 

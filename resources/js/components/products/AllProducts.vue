@@ -39,6 +39,12 @@ t<template>
                                 <input ref="file" @change="handleFileUpload($event)" type="file" accept="image/*" id="image" class="form-control" required>
                             </div>
                             <div class="form-group">
+                                <label for="categories">Categories</label>
+                                <select class="form-control" v-model="product.category_id" multiple>
+                                    <option v-for="(category, index) in categories" :key="index" :value="category.id">{{ category.name }}</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <button @click="submitProduct($event)" class="btn btn-success">Submit</button>
                             </div>
                         </form>
@@ -57,16 +63,25 @@ export default {
             name: '',
             description: '',
             price: '',
-            image: null
+            image: null,
+            category_id: ''
         },
         products: [],
-        errors: null
+        errors: null,
+        categories: []
     }),
     methods: {
         getProducts() {
             axios.get('/products')
             .then(res => {
                 this.products = res.data
+            })
+            .catch(err => console.log(err.response))
+        },
+        getCategories() {
+            axios.get('/categories')
+            .then(res => {
+                this.categories = res.data
             })
             .catch(err => console.log(err.response))
         },
@@ -80,6 +95,7 @@ export default {
             formData.append('name', this.product.name)
             formData.append('description', this.product.description)
             formData.append('price', this.product.price)
+            formData.append('category_id', this.product.category_id)
             axios.post('/products', formData)
             .then(() => {
                 // Clear the errors after a successful request
@@ -106,6 +122,7 @@ export default {
     },
     created() {
         this.getProducts()
+        this.getCategories()
     }
 }
 </script>

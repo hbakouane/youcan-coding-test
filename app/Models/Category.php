@@ -11,6 +11,22 @@ class Category extends Model
 
     public $fillable = ['name', 'parent'];
 
+    public static $rules = [
+        'name' => 'required',
+        'parent' => 'required'
+    ];
+
+    public static function getRequiredFields()
+    {
+        $requiredFields = [];
+        foreach(self::$rules as $key => $value) {
+            if (str_contains($value, 'required')) {
+                array_push($requiredFields, $key);
+            }
+        }
+        return $requiredFields;
+    }
+
     public function children()
     {
         return $this->hasMany( 'App\Models\Category', 'parent', 'id' );
@@ -19,5 +35,10 @@ class Category extends Model
     public function parent()
     {
         return $this->hasOne( 'App\Models\Category', 'id', 'parent' );
+    }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
     }
 }

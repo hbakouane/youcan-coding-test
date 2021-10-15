@@ -7,6 +7,7 @@
                     <th scope="col">Name</th>
                     <th scope="col">Description</th>
                     <th scope="col">Price</th>
+                    <th scope="col">Category</th>
                     <th scope="col">Image</th>
                     <th scope="col">Actions</th>
                 </tr>
@@ -17,6 +18,11 @@
                     <td>{{ product.name }}</td>
                     <td>{{ product.description }}</td>
                     <td>${{ product.price }}</td>
+                    <td>
+                        <span v-for="(category, index) in product.categories" :key="index" class="badge bg-secondary text-light">
+                            {{ category.name }}
+                        </span>
+                    </td>
                     <td>
                         <img :src="product.image" class="img-fluid product-img">
                     </td>

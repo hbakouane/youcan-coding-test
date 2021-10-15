@@ -16,7 +16,7 @@ class Product extends Model
         'image' => 'required'
     ];
 
-    public $fillable = ['name', 'description', 'price', 'image'];
+    public $fillable = ['name', 'description', 'price', 'image', 'category_id'];
 
     public static function getRequiredFields()
     {
@@ -27,5 +27,10 @@ class Product extends Model
             }
         }
         return $requiredFields;
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
     }
 }

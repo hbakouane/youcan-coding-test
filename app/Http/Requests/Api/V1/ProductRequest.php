@@ -27,7 +27,13 @@ class ProductRequest extends FormRequest
             'name' => 'required|max:120',
             'description' => 'required|max:4000',
             'price' => 'required',
-            'image' => 'file|mimes:png,jpg,jpeg,gif,webp'
+            'image' => 'file|mimes:png,jpg,jpeg,gif,webp',
+            'category_id' => 'required'
         ];
+    }
+
+    public function messages()
+    {
+        return ['category_id.required' => 'The category field is required.'];
     }
 }
