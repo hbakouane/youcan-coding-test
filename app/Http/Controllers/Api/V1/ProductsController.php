@@ -22,7 +22,7 @@ class ProductsController extends Controller
     public function index()
     {
         // Get all the products
-        $products = Product::with('categories')->orderBy('id', 'DESC')->get();
+        $products = Product::with('categories')->orderBy('id', 'DESC')->paginate(5);
         return response()->json($products);
     }
 

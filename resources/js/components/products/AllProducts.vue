@@ -12,7 +12,7 @@ t<template>
                         </div>
                     </div>
                     <div class="card-body">
-                        <products-table :products="products" v-on:errors="getErrorsFromChild()" v-on:productsUpdated="getProducts()" />
+                        <products-table :products="products" v-on:errors="getErrorsFromChild()" v-on:productsUpdated="getProducts(page)" />
                     </div>
                 </div>
                 <div v-else class="card">
@@ -109,6 +109,7 @@ export default {
                 this.product.description = null
                 this.product.price = null
                 this.product.image = null
+                this.product.category_id = []
                 // Clear the formData so that it can be fresh when doing another request
                 formData.delete()
             })
