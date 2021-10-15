@@ -28,7 +28,9 @@ t<template>
                                     <td>{{ product.name }}</td>
                                     <td>{{ product.description }}</td>
                                     <td>${{ product.price }}</td>
-                                    <td><img src="{{ product.price }}" class="img-fluid"></td/>
+                                    <td>
+                                        <img :src="product.image" class="img-fluid">
+                                    </td>
                                     <td>
                                         <button @click="deleteCategory(product.id)" class="btn btn-danger">
                                             <i class="fa fa-trash"></i>
@@ -105,7 +107,9 @@ export default {
             formData.append('description', this.product.description)
             formData.append('price', this.product.price)
             axios.post('/products', formData)
-            .then(() => alert('success'))
+            .then(() => {
+                this.errors = null
+            })
             .catch(err => {
                 this.errors = err.response.data.errors
             })

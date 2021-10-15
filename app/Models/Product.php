@@ -17,4 +17,15 @@ class Product extends Model
     ];
 
     public $fillable = ['name', 'description', 'price', 'image'];
+
+    public static function getRequiredFields()
+    {
+        $requiredFields = [];
+        foreach(self::$rules as $key => $value) {
+            if (str_contains($value, 'required')) {
+                array_push($requiredFields, $key);
+            }
+        }
+        return $requiredFields;
+    }
 }

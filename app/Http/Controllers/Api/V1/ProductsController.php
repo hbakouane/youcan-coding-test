@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProductsController extends Controller
 {
@@ -30,7 +32,16 @@ class ProductsController extends Controller
     public function store(ProductRequest $request)
     {
         // Get just the necessary data
-        $data = $request->only(Product::$rules);
+        $data = $request->only(Product::getRequiredFields());
+        // Handle the product image uploading
+        if ($request->hasFile('image')) {
+            // Give the file a name
+            $name = Str::random(99) . '.' . $request->file('image')->extension();
+            // Upload the file
+            $uploadedFile = Storage::putFileAs('public/uploads/products/images', $request->file('image'), $name);
+            // Store the uploaded file's url
+            $data['image'] = $uploadedFile;
+        }
         (new Product())->create($data);
         return response()->json($data);
     }
