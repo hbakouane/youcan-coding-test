@@ -12,33 +12,7 @@ t<template>
                         </div>
                     </div>
                     <div class="card-body">
-                        <table v-if="products.length > 0" class="table table-striped rounded border">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Description</th>
-                                    <th scope="col">Price</th>
-                                    <th scope="col">Image</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="(product, index) in products" :key="index">
-                                    <td>{{ product.id }}</td>
-                                    <td>{{ product.name }}</td>
-                                    <td>{{ product.description }}</td>
-                                    <td>${{ product.price }}</td>
-                                    <td>
-                                        <img :src="product.image" class="img-fluid product-img">
-                                    </td>
-                                    <td>
-                                        <button @click="deleteCategory(product.id)" class="btn btn-danger">
-                                            <i class="fa fa-trash"></i>
-                                        </button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <products-table :products="products" v-on:errors="getErrorsFromChild()" v-on:productsUpdated="getProducts()" />
                     </div>
                 </div>
                 <div v-else class="card">
@@ -62,7 +36,7 @@ t<template>
                             </div>
                             <div class="form-group">
                                 <label for="image">Image</label>
-                                <input ref="file" @change="handleFileUpload($event)" type="file" id="image" class="form-control" required>
+                                <input ref="file" @change="handleFileUpload($event)" type="file" accept="image/*" id="image" class="form-control" required>
                             </div>
                             <div class="form-group">
                                 <button @click="submitProduct($event)" class="btn btn-success">Submit</button>
@@ -108,13 +82,26 @@ export default {
             formData.append('price', this.product.price)
             axios.post('/products', formData)
             .then(() => {
+                // Clear the errors after a successful request
                 this.errors = null
+                // Refresh the products
                 this.getProducts()
+                // Hide add product form
                 this.addProduct = false
+                // Reset the product object value
+                this.product.name = null
+                this.product.description = null
+                this.product.price = null
+                this.product.image = null
+                // Clear the formData so that it can be fresh when doing another request
+                formData.delete()
             })
             .catch(err => {
                 this.errors = err.response.data.errors
             })
+        },
+        getErrorsFromChild(errors) {
+            this.errors = errors
         }
     },
     created() {
