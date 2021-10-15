@@ -10004,3 +10004,11 @@ h3 {
     border-color: #dee2e6;
   }
 }
+body {
+    background-color: #f4f4f4f4 !important;
+}
+
+.product-img {
+    height: 100px !important;
+    border-radius: 12px;
+}

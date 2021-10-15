@@ -29,7 +29,7 @@ t<template>
                                     <td>{{ product.description }}</td>
                                     <td>${{ product.price }}</td>
                                     <td>
-                                        <img :src="product.image" class="img-fluid">
+                                        <img :src="product.image" class="img-fluid product-img">
                                     </td>
                                     <td>
                                         <button @click="deleteCategory(product.id)" class="btn btn-danger">
@@ -78,7 +78,7 @@ t<template>
 <script>
 export default {
     data: () => ({
-        addProduct: true,
+        addProduct: false,
         product: {
             name: '',
             description: '',
@@ -109,11 +109,16 @@ export default {
             axios.post('/products', formData)
             .then(() => {
                 this.errors = null
+                this.getProducts()
+                this.addProduct = false
             })
             .catch(err => {
                 this.errors = err.response.data.errors
             })
         }
+    },
+    created() {
+        this.getProducts()
     }
 }
 </script>

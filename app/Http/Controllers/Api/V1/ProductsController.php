@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ProductRequest;
+use App\Http\Resources\Api\V1\ProductResource;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -40,10 +41,10 @@ class ProductsController extends Controller
             // Upload the file
             $uploadedFile = Storage::putFileAs('public/uploads/products/images', $request->file('image'), $name);
             // Store the uploaded file's url
-            $data['image'] = $uploadedFile;
+            $data['image'] = Storage::url($uploadedFile);
         }
-        (new Product())->create($data);
-        return response()->json($data);
+        $createdProduct = (new Product())->create($data);
+        return new ProductResource($createdProduct);
     }
 
     /**

@@ -1,0 +1,8 @@
+body {
+    background-color: #f4f4f4f4 !important;
+}
+
+.product-img {
+    height: 100px !important;
+    border-radius: 12px;
+}
