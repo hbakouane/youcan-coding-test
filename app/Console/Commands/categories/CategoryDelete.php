@@ -41,8 +41,8 @@ class CategoryDelete extends Command
     {
         // Get the category by its ID
         $category = Category::find($this->argument('categoryId'));
-        // Delete the category if exists
         if ($category) {
+            // Delete the category if exists
             (new CategoriesController())->destroy($category);
             $this->info('Category deleted successfully.');
         } else {
