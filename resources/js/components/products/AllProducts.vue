@@ -1,4 +1,4 @@
-t<template>
+<template>
     <div>
         <div class="container-fluid">
             <div class="container">
@@ -97,9 +97,6 @@ export default {
                 });
             })
             this.products.data = filtredProducts
-        },
-        resetProducts() {
-            this.getProducts()
         }
     },
     methods: {
@@ -152,6 +149,9 @@ export default {
         },
         getErrorsFromChild(errors) {
             this.errors = errors
+        },
+        resetProducts() {
+            this.getProducts()
         }
     },
     created() {

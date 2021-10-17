@@ -7,7 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
 class CategoriesController extends Controller
-{
+{    
+    /**
+     * Categories index page
+     *
+     * @return void
+     */
     public function index()
     {
         return view('categories.index');

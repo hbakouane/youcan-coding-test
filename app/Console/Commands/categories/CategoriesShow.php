@@ -20,7 +20,12 @@ class CategoriesShow extends Command
      * @var string
      */
     protected $description = 'Show all the categories.';
-
+    
+    /**
+     * Categories
+     *
+     * @var array
+     */
     public $categories = [];
 
     /**
@@ -34,7 +39,13 @@ class CategoriesShow extends Command
         // Get all the categories
         $this->categories = Category::orderBy('id', 'DESC')->get();
     }
-
+    
+    /**
+     * Get the parent of a category from its id
+     *
+     * @param  mixed $parentId
+     * @return void
+     */
     public function getParentCategory($parentId)
     {
         // Filter the categories object we already have so that we won't need to execute another query

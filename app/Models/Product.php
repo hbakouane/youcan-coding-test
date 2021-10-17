@@ -9,15 +9,30 @@ class Product extends Model
 {
     use HasFactory;
 
+    /**
+     * Rules
+     *
+     * @var array
+     */
     public static $rules = [
         'name' => 'required',
         'description' => 'required',
         'price' => 'required|float',
         'image' => 'required'
     ];
-
+    
+    /**
+     * The fillables of the Product model
+     *
+     * @var array
+     */
     public $fillable = ['name', 'description', 'price', 'image', 'category_id'];
-
+    
+    /**
+     * Get the required fields of the Product model
+     *
+     * @return void
+     */
     public static function getRequiredFields()
     {
         $requiredFields = [];
@@ -28,7 +43,12 @@ class Product extends Model
         }
         return $requiredFields;
     }
-
+    
+    /**
+     * Categories relation
+     *
+     * @return void
+     */
     public function categories()
     {
         return $this->belongsToMany(Category::class);

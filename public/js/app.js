@@ -6938,9 +6938,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           }
         }, _callee);
       }))();
-    },
-    resetProducts: function resetProducts() {
-      this.getProducts();
     }
   },
   methods: {
@@ -7012,6 +7009,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     getErrorsFromChild: function getErrorsFromChild(errors) {
       this.errors = errors;
+    },
+    resetProducts: function resetProducts() {
+      this.getProducts();
     }
   },
   created: function created() {

@@ -8,14 +8,24 @@ use Illuminate\Database\Eloquent\Model;
 class Category extends Model
 {
     use HasFactory;
-
+    
+    /**
+     * The fillables of the Category model
+     *
+     * @var array
+     */
     public $fillable = ['name', 'parent'];
 
     public static $rules = [
         'name' => 'required',
         'parent' => 'required'
     ];
-
+    
+    /**
+     * Get the required fields of the Product model
+     *
+     * @return void
+     */
     public static function getRequiredFields()
     {
         $requiredFields = [];
@@ -26,17 +36,32 @@ class Category extends Model
         }
         return $requiredFields;
     }
-
+    
+    /**
+     * Children relation
+     *
+     * @return void
+     */
     public function children()
     {
         return $this->hasMany( 'App\Models\Category', 'parent', 'id' );
     }
-    
+        
+    /**
+     * Parent relation
+     *
+     * @return void
+     */
     public function parent()
     {
         return $this->hasOne( 'App\Models\Category', 'id', 'parent' );
     }
-
+    
+    /**
+     * Products relation
+     *
+     * @return void
+     */
     public function products()
     {
         return $this->belongsToMany(Product::class);

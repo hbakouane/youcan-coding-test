@@ -28,7 +28,12 @@ class CategoryRequest extends FormRequest
             'parent' => 'nullable|integer'
         ];
     }
-
+    
+    /**
+     * messages
+     *
+     * @return void
+     */
     public function messages()
     {
         return [
