@@ -19,10 +19,10 @@ class ProductsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         // Get all the products
-        $products = Product::with('categories')->orderBy('id', 'DESC')->paginate(5);
+        $products = Product::with('categories')->orderBy($request->sortBy ?? 'id', $request->type ?? 'DESC')->paginate(5);
         return response()->json($products);
     }
 

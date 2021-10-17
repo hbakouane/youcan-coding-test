@@ -6880,6 +6880,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -6899,7 +6921,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       reset: false,
       filtredProducts: {
         data: []
-      }
+      },
+      sortByName: null,
+      sortByPrice: null
     };
   },
   watch: {
@@ -6942,22 +6966,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   },
   methods: {
     getProducts: function getProducts() {
-      var _this2 = this;
+      var _arguments = arguments,
+          _this2 = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        var query;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _context2.next = 2;
-                return axios.get('/products').then(function (res) {
+                query = _arguments.length > 0 && _arguments[0] !== undefined ? _arguments[0] : "";
+                _context2.next = 3;
+                return axios.get("/products?".concat(query)).then(function (res) {
                   _this2.products = res.data;
-                  _this2.immortalProducts = res.data;
                 })["catch"](function (err) {
                   return console.log(err.response);
                 });
 
-              case 2:
+              case 3:
               case "end":
                 return _context2.stop();
             }
@@ -45506,58 +45532,166 @@ var render = function() {
                 "div",
                 { staticClass: "card-body" },
                 [
-                  _c("div", { staticClass: "form-group" }, [
-                    _c("label", [_vm._v("Filter by category")]),
-                    _vm._v(" "),
-                    _c(
-                      "select",
-                      {
-                        directives: [
+                  _c("div", { staticClass: "row" }, [
+                    _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Filter by category")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
                           {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.filterCategory,
-                            expression: "filterCategory"
-                          }
-                        ],
-                        on: {
-                          change: function($event) {
-                            var $$selectedVal = Array.prototype.filter
-                              .call($event.target.options, function(o) {
-                                return o.selected
-                              })
-                              .map(function(o) {
-                                var val = "_value" in o ? o._value : o.value
-                                return val
-                              })
-                            _vm.filterCategory = $event.target.multiple
-                              ? $$selectedVal
-                              : $$selectedVal[0]
-                          }
-                        }
-                      },
-                      _vm._l(_vm.categories, function(category, index) {
-                        return _c("option", { key: index }, [
-                          _vm._v(_vm._s(category.name))
-                        ])
-                      }),
-                      0
-                    ),
-                    _vm._v(" "),
-                    _vm.reset
-                      ? _c(
-                          "a",
-                          {
-                            staticClass: "btn text-danger",
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.filterCategory,
+                                expression: "filterCategory"
+                              }
+                            ],
                             on: {
-                              click: function($event) {
-                                return _vm.resetProducts()
+                              change: function($event) {
+                                var $$selectedVal = Array.prototype.filter
+                                  .call($event.target.options, function(o) {
+                                    return o.selected
+                                  })
+                                  .map(function(o) {
+                                    var val = "_value" in o ? o._value : o.value
+                                    return val
+                                  })
+                                _vm.filterCategory = $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
                               }
                             }
                           },
-                          [_vm._v("Reset")]
+                          _vm._l(_vm.categories, function(category, index) {
+                            return _c("option", { key: index }, [
+                              _vm._v(_vm._s(category.name))
+                            ])
+                          }),
+                          0
+                        ),
+                        _vm._v(" "),
+                        _vm.reset
+                          ? _c(
+                              "a",
+                              {
+                                staticClass: "btn text-danger",
+                                on: {
+                                  click: function($event) {
+                                    return _vm.resetProducts()
+                                  }
+                                }
+                              },
+                              [_vm._v("Reset")]
+                            )
+                          : _vm._e()
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Sort By Name")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.sortByName,
+                                expression: "sortByName"
+                              }
+                            ],
+                            on: {
+                              change: [
+                                function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.sortByName = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                },
+                                function($event) {
+                                  return _vm.getProducts(
+                                    "sortBy=name&type=" + _vm.sortByName
+                                  )
+                                }
+                              ]
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "desc" } }, [
+                              _vm._v("Up")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "asc" } }, [
+                              _vm._v("Down")
+                            ])
+                          ]
                         )
-                      : _vm._e()
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "col-md-4" }, [
+                      _c("div", { staticClass: "form-group" }, [
+                        _c("label", [_vm._v("Sort By Price")]),
+                        _vm._v(" "),
+                        _c(
+                          "select",
+                          {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.sortByPrice,
+                                expression: "sortByPrice"
+                              }
+                            ],
+                            on: {
+                              change: [
+                                function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.sortByPrice = $event.target.multiple
+                                    ? $$selectedVal
+                                    : $$selectedVal[0]
+                                },
+                                function($event) {
+                                  return _vm.getProducts(
+                                    "sortBy=price&type=" + _vm.sortByPrice
+                                  )
+                                }
+                              ]
+                            }
+                          },
+                          [
+                            _c("option", { attrs: { value: "desc" } }, [
+                              _vm._v("Up")
+                            ]),
+                            _vm._v(" "),
+                            _c("option", { attrs: { value: "asc" } }, [
+                              _vm._v("Down")
+                            ])
+                          ]
+                        )
+                      ])
+                    ])
                   ]),
                   _vm._v(" "),
                   _c("products-table", {

@@ -12,12 +12,34 @@
                         </div>
                     </div>
                     <div class="card-body">
-                        <div class="form-group">
-                            <label>Filter by category</label>
-                            <select v-model="filterCategory">
-                                <option v-for="(category, index) in categories" :key="index">{{ category.name }}</option>
-                            </select>
-                            <a v-if="reset" @click="resetProducts()" class="btn text-danger">Reset</a>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Filter by category</label>
+                                    <select v-model="filterCategory">
+                                        <option v-for="(category, index) in categories" :key="index">{{ category.name }}</option>
+                                    </select>
+                                    <a v-if="reset" @click="resetProducts()" class="btn text-danger">Reset</a>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Sort By Name</label>
+                                    <select v-model="sortByName" @change="getProducts('sortBy=name&type=' + sortByName)">
+                                        <option value="desc">Up</option>
+                                        <option value="asc">Down</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Sort By Price</label>
+                                    <select v-model="sortByPrice" @change="getProducts('sortBy=price&type=' + sortByPrice)">
+                                        <option value="desc">Up</option>
+                                        <option value="asc">Down</option>
+                                    </select>
+                                </div>
+                            </div>
                         </div>
                         <products-table :products="filtredProducts.length > 0 ? filtredProducts : products" v-on:errors="getErrorsFromChild()" v-on:productsUpdated="getProducts(page)" />
                     </div>
@@ -79,7 +101,9 @@ export default {
         categories: [],
         filterCategory: null,
         reset: false,
-        filtredProducts: { data: [] }
+        filtredProducts: { data: [] },
+        sortByName: null,
+        sortByPrice: null
     }),
     watch: {
         async filterCategory() {
@@ -100,11 +124,10 @@ export default {
         }
     },
     methods: {
-        async getProducts() {
-            await axios.get('/products')
+        async getProducts(query = "") {
+            await axios.get(`/products?${query}`)
             .then(res => {
                 this.products = res.data
-                this.immortalProducts = res.data
             })
             .catch(err => console.log(err.response))
         },
