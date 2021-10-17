@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Categories;
 
+use App\Http\Controllers\Api\V1\CategoriesController;
 use App\Models\Category;
 use Illuminate\Console\Command;
 
@@ -40,8 +41,9 @@ class CategoryDelete extends Command
     {
         // Get the category by its ID
         $category = Category::find($this->argument('categoryId'));
+        // Delete the category if exists
         if ($category) {
-            $category->delete();
+            (new CategoriesController())->destroy($category);
             $this->info('Category deleted successfully.');
         } else {
             $this->error('Category not found.');
