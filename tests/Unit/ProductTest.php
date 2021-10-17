@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Unit;
 
 use App\Models\Category;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -11,7 +11,7 @@ use Tests\TestCase;
 class ProductTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * Storing product test
      *
      * @return void
      */

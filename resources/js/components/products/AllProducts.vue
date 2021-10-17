@@ -16,7 +16,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Filter by category</label>
-                                    <select v-model="filterCategory">
+                                    <select v-model="filterCategory" class="form-control">
                                         <option v-for="(category, index) in categories" :key="index">{{ category.name }}</option>
                                     </select>
                                     <a v-if="reset" @click="resetProducts()" class="btn text-danger">Reset</a>
@@ -25,7 +25,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Sort By Name</label>
-                                    <select v-model="sortByName" @change="getProducts('sortBy=name&type=' + sortByName)">
+                                    <select v-model="sortByName" @change="getProducts('sortBy=name&type=' + sortByName)" class="form-control">
                                         <option value="desc">Up</option>
                                         <option value="asc">Down</option>
                                     </select>
@@ -34,7 +34,7 @@
                             <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Sort By Price</label>
-                                    <select v-model="sortByPrice" @change="getProducts('sortBy=price&type=' + sortByPrice)">
+                                    <select v-model="sortByPrice" @change="getProducts('sortBy=price&type=' + sortByPrice)" class="form-control">
                                         <option value="desc">Up</option>
                                         <option value="asc">Down</option>
                                     </select>
@@ -110,7 +110,6 @@ export default {
             await this.getProducts()
             // Show the reset button
             this.reset = true
-            this.products.data = this.immortalProducts.data
             let filtredProducts = []
             // Filter products by a category
             this.products.data.forEach(product => {

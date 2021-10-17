@@ -6942,7 +6942,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
               case 2:
                 // Show the reset button
                 _this.reset = true;
-                _this.products.data = _this.immortalProducts.data;
                 filtredProducts = []; // Filter products by a category
 
                 _this.products.data.forEach(function (product) {
@@ -6955,7 +6954,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
                 _this.products.data = filtredProducts;
 
-              case 7:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -45548,6 +45547,7 @@ var render = function() {
                                 expression: "filterCategory"
                               }
                             ],
+                            staticClass: "form-control",
                             on: {
                               change: function($event) {
                                 var $$selectedVal = Array.prototype.filter
@@ -45604,6 +45604,7 @@ var render = function() {
                                 expression: "sortByName"
                               }
                             ],
+                            staticClass: "form-control",
                             on: {
                               change: [
                                 function($event) {
@@ -45656,6 +45657,7 @@ var render = function() {
                                 expression: "sortByPrice"
                               }
                             ],
+                            staticClass: "form-control",
                             on: {
                               change: [
                                 function($event) {
