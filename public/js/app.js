@@ -6686,7 +6686,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
                   // Reset the category object
-                  _this2.category.name, _this2.category.parent = null;
+                  _this2.category.name, _this2.category.parent = '';
                 })["catch"](function (err) {
                   // Show errors
                   _this2.errors = err.response.data.errors; //this.$refs.errorsHolder = `<strong>${err.response.data.errors.name[0]}</strong>`
@@ -6808,6 +6808,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -6874,28 +6889,90 @@ __webpack_require__.r(__webpack_exports__);
         description: '',
         price: '',
         image: null,
-        category_id: ''
+        category_id: []
       },
       products: [],
+      immortalProducts: [],
       errors: null,
-      categories: []
+      categories: [],
+      filterCategory: null,
+      reset: false,
+      filtredProducts: {
+        data: []
+      }
     };
+  },
+  watch: {
+    filterCategory: function filterCategory() {
+      var _this = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+        var filtredProducts;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return _this.getProducts();
+
+              case 2:
+                // Show the reset button
+                _this.reset = true;
+                _this.products.data = _this.immortalProducts.data;
+                filtredProducts = []; // Filter products by a category
+
+                _this.products.data.forEach(function (product) {
+                  product.categories.forEach(function (category) {
+                    if (category.name == _this.filterCategory) {
+                      filtredProducts.push(product);
+                    }
+                  });
+                });
+
+                _this.products.data = filtredProducts;
+
+              case 7:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee);
+      }))();
+    },
+    resetProducts: function resetProducts() {
+      this.getProducts();
+    }
   },
   methods: {
     getProducts: function getProducts() {
-      var _this = this;
-
-      axios.get('/products').then(function (res) {
-        _this.products = res.data;
-      })["catch"](function (err) {
-        return console.log(err.response);
-      });
-    },
-    getCategories: function getCategories() {
       var _this2 = this;
 
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return axios.get('/products').then(function (res) {
+                  _this2.products = res.data;
+                  _this2.immortalProducts = res.data;
+                })["catch"](function (err) {
+                  return console.log(err.response);
+                });
+
+              case 2:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
+    },
+    getCategories: function getCategories() {
+      var _this3 = this;
+
       axios.get('/categories').then(function (res) {
-        _this2.categories = res.data;
+        _this3.categories = res.data;
       })["catch"](function (err) {
         return console.log(err.response);
       });
@@ -6904,7 +6981,7 @@ __webpack_require__.r(__webpack_exports__);
       this.product.image = this.$refs.file.files[0];
     },
     submitProduct: function submitProduct(e) {
-      var _this3 = this;
+      var _this4 = this;
 
       e.preventDefault();
       var formData = new FormData();
@@ -6915,22 +6992,22 @@ __webpack_require__.r(__webpack_exports__);
       formData.append('category_id', this.product.category_id);
       axios.post('/products', formData).then(function () {
         // Clear the errors after a successful request
-        _this3.errors = null; // Refresh the products
+        _this4.errors = null; // Refresh the products
 
-        _this3.getProducts(); // Hide add product form
+        _this4.getProducts(); // Hide add product form
 
 
-        _this3.addProduct = false; // Reset the product object value
+        _this4.addProduct = false; // Reset the product object value
 
-        _this3.product.name = null;
-        _this3.product.description = null;
-        _this3.product.price = null;
-        _this3.product.image = null;
-        _this3.product.category_id = []; // Clear the formData so that it can be fresh when doing another request
+        _this4.product.name = null;
+        _this4.product.description = null;
+        _this4.product.price = null;
+        _this4.product.image = null;
+        _this4.product.category_id = []; // Clear the formData so that it can be fresh when doing another request
 
         formData["delete"]();
       })["catch"](function (err) {
-        _this3.errors = err.response.data.errors;
+        _this4.errors = err.response.data.errors;
       });
     },
     getErrorsFromChild: function getErrorsFromChild(errors) {
@@ -45429,8 +45506,67 @@ var render = function() {
                 "div",
                 { staticClass: "card-body" },
                 [
+                  _c("div", { staticClass: "form-group" }, [
+                    _c("label", [_vm._v("Filter by category")]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.filterCategory,
+                            expression: "filterCategory"
+                          }
+                        ],
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.filterCategory = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      _vm._l(_vm.categories, function(category, index) {
+                        return _c("option", { key: index }, [
+                          _vm._v(_vm._s(category.name))
+                        ])
+                      }),
+                      0
+                    ),
+                    _vm._v(" "),
+                    _vm.reset
+                      ? _c(
+                          "a",
+                          {
+                            staticClass: "btn text-danger",
+                            on: {
+                              click: function($event) {
+                                return _vm.resetProducts()
+                              }
+                            }
+                          },
+                          [_vm._v("Reset")]
+                        )
+                      : _vm._e()
+                  ]),
+                  _vm._v(" "),
                   _c("products-table", {
-                    attrs: { products: _vm.products },
+                    attrs: {
+                      products:
+                        _vm.filtredProducts.length > 0
+                          ? _vm.filtredProducts
+                          : _vm.products
+                    },
                     on: {
                       errors: function($event) {
                         return _vm.getErrorsFromChild()

@@ -12,7 +12,14 @@ t<template>
                         </div>
                     </div>
                     <div class="card-body">
-                        <products-table :products="products" v-on:errors="getErrorsFromChild()" v-on:productsUpdated="getProducts(page)" />
+                        <div class="form-group">
+                            <label>Filter by category</label>
+                            <select v-model="filterCategory">
+                                <option v-for="(category, index) in categories" :key="index">{{ category.name }}</option>
+                            </select>
+                            <a v-if="reset" @click="resetProducts()" class="btn text-danger">Reset</a>
+                        </div>
+                        <products-table :products="filtredProducts.length > 0 ? filtredProducts : products" v-on:errors="getErrorsFromChild()" v-on:productsUpdated="getProducts(page)" />
                     </div>
                 </div>
                 <div v-else class="card">
@@ -64,17 +71,43 @@ export default {
             description: '',
             price: '',
             image: null,
-            category_id: ''
+            category_id: []
         },
         products: [],
+        immortalProducts: [],
         errors: null,
-        categories: []
+        categories: [],
+        filterCategory: null,
+        reset: false,
+        filtredProducts: { data: [] }
     }),
+    watch: {
+        async filterCategory() {
+            await this.getProducts()
+            // Show the reset button
+            this.reset = true
+            this.products.data = this.immortalProducts.data
+            let filtredProducts = []
+            // Filter products by a category
+            this.products.data.forEach(product => {
+                product.categories.forEach(category => {
+                    if (category.name == this.filterCategory) {
+                        filtredProducts.push(product)
+                    }
+                });
+            })
+            this.products.data = filtredProducts
+        },
+        resetProducts() {
+            this.getProducts()
+        }
+    },
     methods: {
-        getProducts() {
-            axios.get('/products')
+        async getProducts() {
+            await axios.get('/products')
             .then(res => {
                 this.products = res.data
+                this.immortalProducts = res.data
             })
             .catch(err => console.log(err.response))
         },
