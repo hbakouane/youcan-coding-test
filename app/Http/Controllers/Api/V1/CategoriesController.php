@@ -31,7 +31,7 @@ class CategoriesController extends Controller
     public function store(CategoryRequest $request)
     {
         // Get only the necessary data to fill
-        $data = $request->only(Product::getRequiredFields());
+        $data = $request->only(Category::getRequiredFields());
         // Persist a new category to the database
         $category = (new Category())->create($data);
         return response()->json($category);

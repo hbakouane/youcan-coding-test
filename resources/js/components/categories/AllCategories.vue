@@ -77,7 +77,7 @@ export default {
                 // Refresh categories
                 this.getCategories()
                 // Reset the category object
-                this.category.name, this.category.parent = null
+                this.category.name, this.category.parent = ''
             })
             .catch(err => {
                 // Show errors
