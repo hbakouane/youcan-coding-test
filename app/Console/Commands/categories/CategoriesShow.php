@@ -36,8 +36,6 @@ class CategoriesShow extends Command
     public function __construct()
     {
         parent::__construct();
-        // Get all the categories
-        $this->categories = Category::orderBy('id', 'DESC')->get();
     }
     
     /**
@@ -49,7 +47,7 @@ class CategoriesShow extends Command
     public function getParentCategory($parentId)
     {
         // Filter the categories object we already have so that we won't need to execute another query
-        $parentCategory = array_filter($this->categories->toArray(), function ($category) use($parentId) {
+        $parentCategory = array_filter($categories->toArray(), function ($category) use($parentId) {
             return $category['id'] == $parentId;
         });
         return $parentCategory[1]['name'] ?? 'null';
@@ -62,6 +60,8 @@ class CategoriesShow extends Command
      */
     public function handle()
     {
+        // Get all the categories
+        $this->categories = Category::orderBy('id', 'DESC')->get();
         $output = "\r\nID | CATEGORY | PARENT \r\n";
 
         // Fill the output variable with the categories
