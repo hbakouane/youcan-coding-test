@@ -4,12 +4,21 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\CategoryRequest;
-use App\Models\Category;
-use App\Models\Product;
-use Illuminate\Http\Request;
+use App\Http\Services\CategoryService;
 
 class CategoriesController extends Controller
-{
+{    
+    public $categoryService;
+    /**
+     * __construct
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->categoryService = new CategoryService();
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +27,7 @@ class CategoriesController extends Controller
     public function index()
     {
         // Get all the categories
-        $categories = Category::orderBy('id', 'DESC')->get();
+        $categories = $this->categoryService->getAll();
         return response()->json($categories);
     }
 
@@ -31,9 +40,9 @@ class CategoriesController extends Controller
     public function store(CategoryRequest $request)
     {
         // Get only the necessary data to fill
-        $data = $request->only(Category::getRequiredFields());
+        $data = $request->only($this->categoryService->getRequiredFields());
         // Persist a new category to the database
-        $category = (new Category())->create($data);
+        $category = $this->categoryService->create($data);
         return response()->json($category);
     }
 
@@ -43,10 +52,10 @@ class CategoriesController extends Controller
      * @param  \App\Models\Category  $category
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Category $category)
+    public function destroy($id)
     {
         // Delete the selected category
-        $category->delete();
+        $this->categoryService->delete($id);
         // Return no content after deleting
         return response()->noContent();
     }

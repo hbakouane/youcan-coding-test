@@ -5,15 +5,20 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\ProductRequest;
 use App\Http\Resources\Api\V1\ProductResource;
-use App\Models\Category;
-use App\Models\Product;
-use App\Models\ProductCategory;
+use App\Http\Services\ProductService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductsController extends Controller
 {
+    public $productService;
+
+    public function __construct()
+    {
+        $this->productService = new ProductService();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -22,7 +27,7 @@ class ProductsController extends Controller
     public function index(Request $request)
     {
         // Get all the products
-        $products = Product::with('categories')->orderBy($request->sortBy ?? 'id', $request->type ?? 'DESC')->paginate(5);
+        $products = $this->productService->getPaginated(5, [$request->sorBy, $request->type], ['categories']);
         return response()->json($products);
     }
 
@@ -35,7 +40,7 @@ class ProductsController extends Controller
     public function store(ProductRequest $request)
     {
         // Get just the necessary data
-        $data = $request->only(Product::getRequiredFields());
+        $data = $request->only($this->productService->getRequiredFields());
         // Handle the product image uploading
         if ($request->hasFile('image')) {
             // Give the file a name
@@ -45,7 +50,7 @@ class ProductsController extends Controller
             // Store the uploaded file's url
             $data['image'] = Storage::url($uploadedFile);
         }
-        $createdProduct = (new Product())->create($data);
+        $createdProduct = $this->productService->create($data);
         // Handle the product categories that can be many not just one
         $createdProduct->categories()->attach(explode(',', $request->category_id));
         return new ProductResource($createdProduct);
@@ -54,13 +59,13 @@ class ProductsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy($id)
     {
         // Delete the selected product
-        $product->delete();
+        $this->productService->delete($id);
         // Return no content after deleting
         return response()->noContent();
     }

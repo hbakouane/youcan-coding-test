@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands\Products;
 
+use App\Http\Services\ProductService;
 use App\Models\Product;
 use Illuminate\Console\Command;
 
@@ -38,8 +39,10 @@ class ProductsShow extends Command
      */
     public function handle()
     {
+        // Inialize the product service
+        $productService = new ProductService();
         // Get all the products
-        $products = Product::orderBy('id', 'DESC')->get();
+        $products = $productService->getAll();
 
         $output = "\r\nID | Name | Price \r\n";
 
