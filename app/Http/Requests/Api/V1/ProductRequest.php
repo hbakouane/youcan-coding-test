@@ -3,6 +3,7 @@
 namespace App\Http\Requests\Api\V1;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ProductRequest extends FormRequest
 {
@@ -28,7 +29,10 @@ class ProductRequest extends FormRequest
             'description' => 'required|max:4000',
             'price' => 'required',
             'image' => 'file|mimes:png,jpg,jpeg,gif,webp',
-            'category_id' => 'required'
+            'category_id' => [
+                'required',
+                Rule::in('id')
+            ]
         ];
     }
     
