@@ -33,6 +33,7 @@ All the following commands are artisan ones, which means you have to run the com
 | product:create    | Created a new product            | --name--description --categoryId --price --image|
 | product:delete    | Deletes a product by a given ID  | --productId                                     |
 | test              | Tests the product uploading      |                                                 |
+| make:service      | Creates a new service            | --modelName                                                |
 
 ### Example
 <code>php artisan category:create "Programming" 5</code>
